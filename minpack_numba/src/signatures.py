@@ -27,7 +27,7 @@ class MinpackSignature:
 
     @staticmethod
     def hybrd(udata_type: types.Type = types.voidptr) -> Signature:
-        """Signature for the function passed to the `hybrd` function.
+        """Signature for `fcn` argument of [hybrd][minpack_numba.hybrd] like functions.
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class MinpackSignature:
 
     @staticmethod
     def hybrj(udata_type: types.Type = types.voidptr) -> Signature:
-        """Signature for the function passed to the `hybrj` function.
+        """Signature for `fcn` argument of [hybrj][minpack_numba.hybrj] like functions.
 
         Parameters
         ----------
@@ -75,7 +75,7 @@ class MinpackSignature:
 
     @staticmethod
     def lmdif(udata_type: types.Type = types.voidptr) -> Signature:
-        """Signature for the function passed to the `lmdif` function.
+        """Signature for `fcn` argument of [lmdif][minpack_numba.lmdif] like functions.
 
         Parameters
         ----------
@@ -99,7 +99,7 @@ class MinpackSignature:
 
     @staticmethod
     def lmder(udata_type: types.Type = types.voidptr) -> Signature:
-        """Signature for the function passed to the `lmder` function.
+        """Signature for `fcn` argument of [lmder][minpack_numba.lmder] like functions.
 
         Parameters
         ----------
@@ -125,7 +125,7 @@ class MinpackSignature:
 
     @staticmethod
     def lmstr(udata_type: types.Type = types.voidptr) -> Signature:
-        """Signature for the function passed to the `lmstr` function.
+        """Signature for `fcn` argument of [lmstr][minpack_numba.lmstr] like functions.
 
         Parameters
         ----------
@@ -152,12 +152,18 @@ class MinpackSignature:
 # func
 hybrd_sig = MinpackSignature.hybrd()
 """
+Signature for `fcn` argument of [hybrd][minpack_numba.hybrd] &
+[hybrd1][minpack_numba.hybrd1].
+
 (n: int32, x: float64*, fvec: float64*, iflag: int32*, udata: void*) -> none
 """
 
 # fcn_hybrj
 hybrj_sig = MinpackSignature.hybrj()
 """
+Signature for `fcn` argument of [hybrj][minpack_numba.hybrj] &
+[hybrj1][minpack_numba.hybrj1].
+
 (n: int32, x: float64*, fvec: float64*, fjac: float64*, ldfjac: int32, iflag: int32*,
     udata: void*) -> none
 """
@@ -165,6 +171,9 @@ hybrj_sig = MinpackSignature.hybrj()
 # func2
 lmdif_sig = MinpackSignature.lmdif()
 """
+Signature for `fcn` argument of [lmdif][minpack_numba.lmdif] &
+[lmdif1][minpack_numba.lmdif1].
+
 (m: int32, n: int32, x: float64*, fvec: float64*, iflag: int32*, udata: void*)
     -> none
 """
@@ -172,6 +181,9 @@ lmdif_sig = MinpackSignature.lmdif()
 # fcn_lmder
 lmder_sig = MinpackSignature.lmder()
 """
+Signature for `fcn` argument of [lmder][minpack_numba.lmder] &
+[lmder1][minpack_numba.lmder1].
+
 (m: int32, n: int32, x: float64*, fvec: float64*, fjac: float64*, ldfjac: int32,
     iflag: int32*, udata: void*) -> none
 """
@@ -179,6 +191,9 @@ lmder_sig = MinpackSignature.lmder()
 # fcn_lmstr
 lmstr_sig = MinpackSignature.lmstr()
 """
+Signature for `fcn` argument of [lmstr][minpack_numba.lmstr] &
+[lmstr1][minpack_numba.lmstr1].
+
 (m: int32, n: int32, x: float64*, fvec: float64*, fjrow: float64*, iflag: int32*,
     udata: void*) -> none
 """
