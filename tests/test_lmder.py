@@ -5,7 +5,9 @@ from numpy import array, empty, finfo, float64, int32, ones, sqrt
 from numpy.linalg import norm
 from numpy.testing import assert_allclose, assert_equal
 
-from minpack_numba import chkder, lmder, lmder1, lmder1_, lmder_, lmder_sig
+from minpack_numba import chkder, lmder, lmder1
+from minpack_numba.signatures import lmder_sig
+from minpack_numba.src import lmder1_, lmder_
 from minpack_numba.utils import ptr_from_val, val_from_ptr
 
 # ruff: noqa: ANN001, ARG001, PLR2004
