@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 __all__ = [
+    "MinpackSignature",
     "hybrd_sig",
     "hybrj_sig",
-    "lmdif_sig",
     "lmder_sig",
+    "lmdif_sig",
     "lmstr_sig",
-    "MinpackSignature",
 ]
 
 from typing import TYPE_CHECKING
