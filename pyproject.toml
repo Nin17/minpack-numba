@@ -9,11 +9,18 @@ description = 'A numba compatible wrapper of modern minpack.'
 readme = 'README.md'
 license = {file = 'LICENSE'}
 authors = [{name = 'Chris Ninham', email = 'christopher.ninham@insa-lyon.fr'},]
-dependencies = ['numba', 'numpy'] # TODO(nin17): Add version of numba & numpy required
+dependencies = [
+    'numba',
+    "numpy",
+] # TODO(nin17): Add version of numba & numpy required
 requires-python = ">=3.10"
 
-[project.optional-dependencies]
-dev = ['pytest', 'pytest-env', 'ruff', 'scipy']
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "pytest-env>=1.6.0",
+    "scipy>=1.15.3",
+]
 
 [tool.ruff]
 line-length = 88
@@ -36,7 +43,7 @@ reportInvalidTypeForm = false
 
 [tool.pytest.ini_options]
 addopts = [
-    "--import-mode=importlib", "--ignore=minpack/"
+    "--import-mode=importlib", "--ignore=subprojects/minpack/"
 ]
 
 [tool.pytest_env]

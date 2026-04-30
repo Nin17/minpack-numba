@@ -6,23 +6,16 @@ project(
     'buildtype=release',
   ]
   )
-add_languages('c', native: false)
 
 py3 = import('python').find_installation(pure: false)
 
 subdir('minpack_numba')
 
-minpack_header = files(
-  'minpack/include/minpack.h',
+subproject('minpack',
+  default_options: [
+    'api=true',
+    'default_library=shared',
+    'python=false'
+  ],
+  required: true,
 )
-
-shared_library('minpack',
-    [
-    'minpack/src/minpack.f90', 
-    'minpack/src/minpack_capi.f90'
-    ],
-    install: true,
-    install_dir: py3.get_install_dir() / 'minpack_numba',
-)
-
-install_headers(minpack_header)

@@ -12,15 +12,17 @@ from numba.extending import intrinsic
 from numba.types import CPointer, int32, voidptr
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from numba.core.typing import Signature
     from numba.types import FunctionType, Type
     from numpy.typing import ArrayLike, DTypeLike, NDArray
 
 __all__ = [
     "address_as_void_pointer",
+    "check_cfunc",
     "ptr_from_val",
     "val_from_ptr",
-    "check_cfunc",
 ]
 
 ptr_int32 = CPointer(int32)
@@ -30,7 +32,7 @@ ptr_int32 = CPointer(int32)
 def address_as_void_pointer(
     typingctx,
     src: Type,
-) -> tuple[Signature, callable]:
+) -> tuple[Signature, Callable]:
     """Void pointer from given memory address.
 
     Copied from: https://stackoverflow.com/a/61550054/15456681
@@ -57,7 +59,7 @@ def address_as_void_pointer(
 
 
 @intrinsic
-def ptr_from_val(typingctx, src: Type) -> tuple[Signature, callable]:
+def ptr_from_val(typingctx, src: Type) -> tuple[Signature, Callable]:
     """Pointer from given value.
 
     Copied from: https://stackoverflow.com/a/59538114/15456681
@@ -84,7 +86,7 @@ def ptr_from_val(typingctx, src: Type) -> tuple[Signature, callable]:
 
 
 @intrinsic
-def val_from_ptr(typingctx, src: Type) -> tuple[Signature, callable]:
+def val_from_ptr(typingctx, src: Type) -> tuple[Signature, Callable]:
     """Value from given pointer.
 
     Copied from: https://stackoverflow.com/a/59538114/15456681
@@ -165,42 +167,12 @@ def check_cfunc(func: FunctionType, *args: NDArray | int) -> ct.c_int:
     }
 
     _func = func.ctypes
-    _args = [_converter[j](i) for i, j in zip(args, _func.argtypes)]
+    _args = [_converter[j](i) for i, j in zip(args, _func.argtypes, strict=True)]
 
     return _func(*_args)
 
 
-def check_cfunc(func: FunctionType, *args: NDArray | int) -> ct.c_int:
-    """Check a numba cfunc with ctypes.
-
-    Parameters
-    ----------
-    func : types.FunctionType
-        The function to check.
-    *args : NDArray | int
-        The arguments to pass to the function.
-
-    Returns
-    -------
-    ct.c_int
-        The return value of the function.
-
-    """
-    _converter = {
-        ct.c_void_p: lambda x: x.ctypes.data,
-        ct.c_int: lambda x: x,
-        ct.POINTER(ct.c_int): lambda x: x.ctypes.data_as(ct.POINTER(ct.c_int)),
-        ct.POINTER(ct.c_double): lambda x: x.ctypes.data_as(ct.POINTER(ct.c_double)),
-        ct.POINTER(ct.c_float): lambda x: x.ctypes.data_as(ct.POINTER(ct.c_float)),
-    }
-
-    _func = func.ctypes
-    _args = [_converter[j](i) for i, j in zip(args, _func.argtypes)]
-
-    return _func(*_args)
-
-
-def get_extension_path(lib_name: str) -> str:
+def get_extension_path(lib_name: str) -> str | None:
     """Get the path to the library with the given name in the parent directory.
 
     Parameters
@@ -214,7 +186,9 @@ def get_extension_path(lib_name: str) -> str:
         The path to the library.
 
     """
-    search_path = Path(__file__).parent.parent
+    search_path = Path(__file__).parent.parent.parent.joinpath(
+        ".minpack_numba.mesonpy.libs",
+    )
     ext_path = f"**/{lib_name}.*"
     matches = search_path.glob(ext_path)
     try:
