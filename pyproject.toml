@@ -48,3 +48,6 @@ addopts = [
 
 [tool.pytest_env]
 NUMBA_CAPTURED_ERRORS='new_style'
+
+[tool.meson-python]
+allow-windows-internal-shared-libs=true
